@@ -6,9 +6,9 @@ Instructions: implement all of the pending specs (the `it` statements without bl
 =end
 
 describe Dessert do
-  let(:chef) { double("chef") }
+  let(:chef) { double(:"chef") }
 
-  subject(:sand) { Dessert.new('sand', 1, chef) }
+  subject(:sand) { Dessert.new('sand', 5, chef) }
 
   describe '#initialize' do
     it 'sets a type' do
@@ -16,7 +16,7 @@ describe Dessert do
     end
 
     it 'sets a quantity' do
-      expect(sand.quantity).to eq(1)
+      expect(sand.quantity).to eq(5)
     end
 
     it 'starts ingredients as an empty array' do
@@ -50,13 +50,23 @@ describe Dessert do
   end
 
   describe '#eat' do
-    it 'subtracts an amount from the quantity'
+    it 'subtracts an amount from the quantity' do
+      sand.eat(1)
 
-    it 'raises an error if the amount is greater than the quantity'
+      expect(sand.quantity).to eq(4)
+    end
+
+    it 'raises an error if the amount is greater than the quantity' do
+      expect { sand.eat(100) }.to raise_error
+    end
   end
 
   describe '#serve' do
-    it "contains the titleized version of the chef's name"
+    it "contains the titleized version of the chef's name" do
+      allow(chef).to receive(:titleize).and_return("Great Nincompoop")
+
+      expect(sand.serve).should eq("Great Nincompoop has made 4 sands!")
+    end
   end
 
   describe '#make_more' do
